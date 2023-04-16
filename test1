@@ -1,0 +1,35 @@
+from telegram.ext import Updater, CommandHandler, MessageHandler, filters
+from telegram import Bot
+
+#Определение обработчиков команд start и help
+
+def start(update, context):
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Привет! Я бот.")
+
+def help(update, context):
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Это справочное сообщение.")
+
+#Определение обработчика текстовых сообщений
+
+def handle_text(update, context):
+    text = update.message.text
+    # добавьте здесь код обработки текстового сообщения
+
+#Создание объекта бота и настройка обработчиков
+
+bot = Bot(token='YOUR_TOKEN_HERE')
+updater = Updater(bot=bot, use_context=True)
+dispatcher = updater.dispatcher
+
+#Добавление обработчиков команд
+
+dispatcher.add_handler(CommandHandler('start', start))
+dispatcher.add_handler(CommandHandler('help', help))
+
+#Добавление обработчика текстовых сообщений
+
+dispatcher.add_handler(MessageHandler(filters.text, handle_text))
+
+#Запуск бота
+
+updater.start_polling()
